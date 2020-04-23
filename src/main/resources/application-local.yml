@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:mysql://krimson701.cafe24.com:3306/krimson701?autoReconnect=true&autoReconnectForPools=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    username: krimson701
+    password: CRH8B*e2YUsbsQ9
+  jpa:
+    hibernate:
+      ddl-auto: update # 운영시에는 validate 추천
+    show-sql: true
