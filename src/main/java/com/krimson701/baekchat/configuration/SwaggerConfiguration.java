@@ -29,7 +29,7 @@ public class SwaggerConfiguration {
         return getDefaultDocket(null, null);
     }
 
-    @Profile("local")
+    @Profile("dev")
     @Bean
     public Docket devApi() {
         String info = "-----------------------------\n"

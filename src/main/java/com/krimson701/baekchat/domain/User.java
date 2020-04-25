@@ -4,35 +4,35 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name="tb_user")
 @Data
 public class User {
     @Id
-    @Column(name="USER_ID")
+    @Column(name="user_id")
     private String id;
 
-    @Column(length=20, nullable=false) // varchar(100) not null
-    private String name;
+    @Column(name="email", length=40, nullable=false) // varchar(100) not null
+    private String email;
 
-    @Column		// varchar(255)
+    @Column(name="hobby")		// varchar(255)
     private String hobby;
 
-    @OneToMany(mappedBy="relatingId")
-    private List<Friendship> friendships = new ArrayList<Friendship>();
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id")
+    private Set<Relation> friendships;
 
-    @Column
+    @Column(name="create_date")
     private Date createDate;
 
 
     public User(){}
 
-    public User(String name, String hobby){
-        this.name = name;
+    public User(String email, String hobby){
+        this.email = email;
         this.hobby = hobby;
     }
 }
