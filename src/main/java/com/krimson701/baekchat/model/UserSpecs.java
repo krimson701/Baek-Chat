@@ -17,12 +17,11 @@ public class UserSpecs {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 String keyWord = "";
-                if(StringUtils.isNotEmpty(keyword))
+                if (StringUtils.isNotEmpty(keyword))
                     keyWord = keyword;
                 return cb.like(root.get(spec), "%" + keyWord + "%");
             }
         };
     }
-
 
 }

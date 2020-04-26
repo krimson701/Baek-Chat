@@ -5,6 +5,7 @@ spring:
     username: krimson701
     password: CRH8B*e2YUsbsQ9
   jpa:
+    generate-ddl: true
     hibernate:
       dialect: MySQLInnoDBDialect
       ddl-auto: update # validate in prod

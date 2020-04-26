@@ -1,22 +1,17 @@
 package com.krimson701.baekchat.controller;
 
 import com.krimson701.baekchat.domain.User;
+import com.krimson701.baekchat.model.UserDto;
 import com.krimson701.baekchat.model.UserSearchModel;
 import com.krimson701.baekchat.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Api(value = "user-controller")
@@ -38,8 +33,43 @@ public class UserController {
     public ResponseEntity<Page<User>> UserListSearch(
             @ModelAttribute final UserSearchModel userSearchModel,
             @PageableDefault(size=5, sort="id") final Pageable pageable){
+
         Page<User> rtnDto = userService.getUserList(userSearchModel, pageable);
 
         return new ResponseEntity<Page<User>>(rtnDto,HttpStatus.OK);
     }
+
+    @ApiOperation(
+            value = "유저 등록"
+            , notes = "유저 등록"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="complete")
+    })
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public ResponseEntity<Void> insertUser(
+            @ModelAttribute final UserDto userDto) {
+
+        userService.insertUser(userDto);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @ApiOperation(
+            value = "유저 수정"
+            , notes = "유저 수정"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="complete")
+    })
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity<Void> updateUser(
+            @ApiParam(value = "유저 ID 키", required = true) @RequestParam(required = true) int id,
+            @ModelAttribute final UserDto userDto) {
+
+        userService.updateUser(id, userDto);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
 }

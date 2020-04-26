@@ -1,9 +1,9 @@
 package com.krimson701.baekchat.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-
 import java.util.Date;
 import java.util.Set;
 
@@ -11,9 +11,14 @@ import java.util.Set;
 @Table(name="tb_user")
 @Data
 public class User {
+
     @Id
-    @Column(name="user_id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id", nullable=false)
+    private long id;
+
+    @Column(name="user_id", unique=true)		// varchar(255)
+    private String userId;
 
     @Column(name="email", length=40, nullable=false) // varchar(100) not null
     private String email;
@@ -22,12 +27,12 @@ public class User {
     private String hobby;
 
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id")
-    private Set<Relation> friendships;
+    @JoinColumn(name="id", nullable = false, insertable = false, updatable = false)
+    private Set<Relation> relations;
 
     @Column(name="create_date")
+    @CreationTimestamp
     private Date createDate;
-
 
     public User(){}
 

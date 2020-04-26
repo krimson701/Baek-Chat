@@ -11,11 +11,13 @@ import java.util.Date;
 public class Relation {
 
     @Id
-    @Column(name ="user_id")
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="id")
+    private int id;
 
-    @Column(name ="related_id")
-    private String reslatedId;
+    @OneToOne
+    @JoinColumn(name ="related_id", nullable = false, insertable = false, updatable = false)
+    private User relatedUser;
 
     @Column(name ="type")
     private String type; // 나중에 Enum으로 정의하자
@@ -23,8 +25,8 @@ public class Relation {
     @Column(name ="create_date")
     private Date createDate;
 
-    public Relation(String id, String type){
-        this.reslatedId = id;
+    public Relation(User user, String type){
+        this.relatedUser = user;
         this.type = type;
     }
 }

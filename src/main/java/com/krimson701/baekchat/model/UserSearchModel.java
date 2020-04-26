@@ -10,10 +10,10 @@ import lombok.Data;
 @Data
 public class UserSearchModel {
 
-    @ApiModelProperty(value = "아이디", required = false)
+    @ApiModelProperty(value = "아이디(like)", required = false)
     private String id;
 
-    @ApiModelProperty(value = "취미", required = false)
+    @ApiModelProperty(value = "취미(like)", required = false)
     private String hobby;
 
 }
