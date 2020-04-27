@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface RelationRepository extends JpaRepository<Relation, Long> {
 
-    List<User> findAllById(int userId);
+    List<User> findAllByIdAndType(int userId, String relation);
+
 
 //    @Query("SELECT DISTINCT relation FROM tb_user_relation relation left join fetch relation.pets WHERE owner.lastName LIKE :lastName%")
 //    @Transactional(readOnly = true)

@@ -72,4 +72,20 @@ public class UserController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    @ApiOperation(
+            value = "유저 삭제"
+            , notes = "유저 삭제"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="complete")
+    })
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteUser(
+            @ApiParam(value = "유저 ID 키", required = true) @RequestParam(required = true) int id) {
+
+        userService.deleteUser(id);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
 }
