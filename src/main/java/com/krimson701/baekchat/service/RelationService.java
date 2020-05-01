@@ -20,19 +20,20 @@ public class RelationService {
     @Autowired
     UserRepository userRepository;
 
-    public List<User> getRelations(final int userId, final RelationType relation){
-        List<User> userList = relationRepository.findAllByIdAndType(userId, relation.name());
-        return userList;
+    public List<Relation> getRelations(final long userId, final RelationType type){
+        List<Relation> relations = relationRepository.findAllByRelatingIdAndType(userId, type.name());
+
+        return relations;
     }
 
-    public void insertRelation(final int userId, final int relatedId , final RelationType relationType) throws Exception {
+    public void insertRelation(final long userId, final long relatedId , final RelationType relationType) throws Exception {
 
-        Optional<User> relatedUser = userRepository.findById((long) relatedId);
+        Optional<User> relatedUser = userRepository.findById(relatedId);
         Relation relation = null;
         if(relatedUser.isPresent()) {
-            relation = new Relation(userId,relatedUser.get(), relationType.name());
+            relation = new Relation(userId, relatedUser.get(), relationType.name());
         } else {
-            throw new Exception();
+            throw new Exception();      // 로거 추가하자
         }
         relationRepository.save(relation);
     }

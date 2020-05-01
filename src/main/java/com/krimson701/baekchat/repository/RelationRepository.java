@@ -1,14 +1,13 @@
 package com.krimson701.baekchat.repository;
 
 import com.krimson701.baekchat.domain.Relation;
-import com.krimson701.baekchat.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface RelationRepository extends JpaRepository<Relation, Long> {
 
-    List<User> findAllByIdAndType(int userId, String relation);
+    List<Relation> findAllByRelatingIdAndType(long userId, String relation);
 
 
 //    @Query("SELECT DISTINCT relation FROM tb_user_relation relation left join fetch relation.pets WHERE owner.lastName LIKE :lastName%")

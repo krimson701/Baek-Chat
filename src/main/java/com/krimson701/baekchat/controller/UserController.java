@@ -36,7 +36,7 @@ public class UserController {
 
         Page<User> rtnDto = userService.getUserList(userSearchModel, pageable);
 
-        return new ResponseEntity<Page<User>>(rtnDto,HttpStatus.OK);
+        return new ResponseEntity<>(rtnDto, HttpStatus.OK);
     }
 
     @ApiOperation(

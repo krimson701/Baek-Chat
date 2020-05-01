@@ -1,10 +1,12 @@
 package com.krimson701.baekchat.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+
 
 @Entity
 @Table(name="tb_user_relation")
@@ -12,11 +14,15 @@ import java.util.Date;
 public class Relation {
 
     @Id
-    @Column(name ="id")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="id", nullable = false)
+    private long id;
+
+    @Column(name ="relating_id")
+    private long relatingId;
 
     @OneToOne
-    @JoinColumn(name ="id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name ="related_id", nullable = false)
     private User relatedUser;
 
     @Column(name ="type")
@@ -28,8 +34,8 @@ public class Relation {
 
     public  Relation(){}
 
-    public Relation(int id,User user, String type){
-        this.id = id;
+    public Relation(long relatingId, User user, String type){
+        this.relatingId = relatingId;
         this.relatedUser = user;
         this.type = type;
     }

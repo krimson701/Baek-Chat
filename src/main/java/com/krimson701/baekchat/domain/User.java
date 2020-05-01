@@ -1,11 +1,13 @@
 package com.krimson701.baekchat.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+
 
 @Entity
 @Table(name="tb_user")
@@ -26,8 +28,9 @@ public class User {
     @Column(name="hobby")		// varchar(255)
     private String hobby;
 
+    @JsonBackReference
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name="relating_id", nullable = false, insertable = false, updatable = false)
     private Set<Relation> relations;
 
     @Column(name="create_date")
