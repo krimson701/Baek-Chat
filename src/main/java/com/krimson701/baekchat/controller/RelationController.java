@@ -38,6 +38,7 @@ public class RelationController {
         return new ResponseEntity<>(rtnDto, HttpStatus.OK);
     }
 
+
     @ApiOperation(
             value = "유저 관계 추가"
             , notes = "유저 관계 추가"
@@ -51,6 +52,22 @@ public class RelationController {
             @ApiParam(value = "상대 ID 키", required = true) @RequestParam final long relatedId,
             @ApiParam(value = "관계 타입", required = true) @RequestParam final RelationType relation) throws Exception {
         relationService.insertRelation(userId, relatedId, relation);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiOperation(
+            value = "유저 관계 삭제"
+            , notes = "유저 관계 삭제"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code = 200, message = "complete")
+    })
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public ResponseEntity<Void> deleteRelation(
+            @ApiParam(value = "유저 ID 키", required = true) @RequestParam final long userId,
+            @ApiParam(value = "상대 ID 키", required = true) @RequestParam final long relatedId) throws Exception {
+        relationService.deleteRelation(userId, relatedId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

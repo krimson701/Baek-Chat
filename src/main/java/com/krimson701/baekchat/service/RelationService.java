@@ -38,4 +38,16 @@ public class RelationService {
         relationRepository.save(relation);
     }
 
+    public void deleteRelation(final long userId, final long relatedId) throws Exception {
+
+        Optional<User> relatedUser = userRepository.findById(relatedId);
+        Relation relation = null;
+        if(relatedUser.isPresent()) {
+            relation = new Relation(userId, relatedUser.get());
+        } else {
+            throw new Exception();      // 로거 추가하자
+        }
+        relationRepository.delete(relation);
+    }
+
 }
