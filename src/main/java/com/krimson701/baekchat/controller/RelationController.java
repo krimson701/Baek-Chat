@@ -63,11 +63,10 @@ public class RelationController {
     @ApiResponses(value={
             @ApiResponse(code = 200, message = "complete")
     })
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteRelation(
-            @ApiParam(value = "유저 ID 키", required = true) @RequestParam final long userId,
-            @ApiParam(value = "상대 ID 키", required = true) @RequestParam final long relatedId) throws Exception {
-        relationService.deleteRelation(userId, relatedId);
+            @ApiParam(value = "관계 ID 키", required = true) @RequestParam final long Id) throws Exception {
+        relationService.deleteRelation(Id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

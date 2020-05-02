@@ -40,8 +40,4 @@ public class Relation {
         this.type = type;
     }
 
-    public Relation(long relatingId, User user) {
-        this.relatingId = relatingId;
-        this.relatedUser = user;
-    }
 }
