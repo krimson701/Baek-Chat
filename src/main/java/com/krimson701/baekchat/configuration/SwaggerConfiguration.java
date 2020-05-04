@@ -12,7 +12,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Profile({"local", "dev"})
@@ -20,7 +19,7 @@ import java.util.Set;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-    @Profile("local")
+    @Profile({"local","dev"})
     @Bean
     public Docket localApi() {
         String info = "-----------------------------\n"
@@ -29,16 +28,16 @@ public class SwaggerConfiguration {
         return getDefaultDocket(null, null);
     }
 
-    @Profile("dev")
-    @Bean
-    public Docket devApi() {
-        String info = "-----------------------------\n"
-                + "-- swagger api for [ dev ] --\n"
-                + "-----------------------------\n";
-        Set<String> protocols = new HashSet<String>();
-        protocols.add("https");
-        return getDefaultDocket(protocols, "baek-chat.openur.biz"); // openur.biz 할지 말지 아직안정함
-    }
+//    @Profile("dev")
+//    @Bean
+//    public Docket devApi() {
+//        String info = "-----------------------------\n"
+//                + "-- swagger api for [ dev ] --\n"
+//                + "-----------------------------\n";
+//        Set<String> protocols = new HashSet<String>();
+//        protocols.add("https");
+//        return getDefaultDocket(protocols, "baek-chat.openur.biz"); // openur.biz 할지 말지 아직안정함
+//    }
 
     private Docket getDefaultDocket(Set<String> protocols, String host){
         ApiInfo apiInfo = new ApiInfoBuilder().title("baek-chat-api").description("baek-chat API 명세").build();
