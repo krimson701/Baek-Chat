@@ -23,6 +23,9 @@ public class UserService {
     @Autowired
     RelationRepository relationRepository;
 
+    public User getUser(String userId){
+        return userRepository.findByUserId(userId);
+    }
 
     public Page<User> getUserList(UserSearchModel userSearchModel, Pageable pageable) {
 

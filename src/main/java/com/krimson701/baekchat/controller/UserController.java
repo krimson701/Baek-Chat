@@ -23,6 +23,22 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(
+            value = "유저 확인"
+            , notes = "유저 확인"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="complete")
+    })
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public ResponseEntity<User> getUser(
+            @ApiParam(value = "유저 ID", required = true) @RequestParam final String userId){
+
+        User result = userService.getUser(userId);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(
             value = "유저 리스트 조회"
             , notes = "유저 리스트 조회"
     )
