@@ -13,3 +13,6 @@ spring:
         use_second_level_cache: true
         use_query_cache: false
     show-sql: true
+
+server:
+  port: 9090
