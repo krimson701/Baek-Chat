@@ -39,4 +39,5 @@ public class Relation {
         this.relatedUser = user;
         this.type = type;
     }
+
 }

@@ -38,4 +38,8 @@ public class RelationService {
         relationRepository.save(relation);
     }
 
+    public void deleteRelation(final long Id) throws Exception {
+        relationRepository.deleteById(Id);
+    }
+
 }
