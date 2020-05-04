@@ -39,9 +39,7 @@ public class RelationService {
     }
 
     public void deleteRelation(final long Id) throws Exception {
-
-        Optional<Relation> relation = RelationRepository.findById(Id);
-        relationRepository.delete(relation);
+        relationRepository.deleteById(Id);
     }
 
 }
