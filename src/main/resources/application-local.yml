@@ -14,6 +14,8 @@ spring:
         use_query_cache: false
     show-sql: true
 
+kafka:
+  server: 110.34.74.134:9092
 
 server:
   port: 8080

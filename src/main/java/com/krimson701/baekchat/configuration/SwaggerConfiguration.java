@@ -19,11 +19,20 @@ import java.util.Set;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-    @Profile({"local","dev"})
+    @Profile("local")
     @Bean
     public Docket localApi() {
         String info = "-----------------------------\n"
                 + "-- swagger api for [local] --\n"
+                + "-----------------------------\n";
+        return getDefaultDocket(null, null);
+    }
+
+    @Profile("dev")
+    @Bean
+    public Docket devApi() {
+        String info = "-----------------------------\n"
+                + "-- swagger api for [dev] --\n"
                 + "-----------------------------\n";
         return getDefaultDocket(null, null);
     }

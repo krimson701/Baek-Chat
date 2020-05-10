@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.krimson701.baekchat.model.ChattingMessage;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.IntegerSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -17,6 +18,10 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class KafkaConfig {
+
+    @Value("${kafka.server}")
+    private String server;
+
     @Bean
     public ProducerFactory<String, ChattingMessage> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs(), null, new JsonSerializer<ChattingMessage>());
@@ -31,7 +36,7 @@ public class KafkaConfig {
     public Map<String, Object> producerConfigs() {
 
         return ImmutableMap.<String, Object>builder()
-                .put("bootstrap.servers", "localhost:9092")//kafka server ip & port
+                .put("bootstrap.servers", server)//kafka server ip & port
                 .put("key.serializer", IntegerSerializer.class)
                 .put("value.serializer", JsonSerializer.class)//Object json parser
                 .put("group.id", "spring-boot-test") // chatting  group id
@@ -53,7 +58,7 @@ public class KafkaConfig {
     @Bean
     public Map<String, Object> consumerConfigs() {
         return ImmutableMap.<String, Object>builder()
-                .put("bootstrap.servers", "localhost:9092")
+                .put("bootstrap.servers", server)
                 .put("key.deserializer", IntegerDeserializer.class)
                 .put("value.deserializer", JsonDeserializer.class)
                 .put("group.id", "spring-boot-test")
