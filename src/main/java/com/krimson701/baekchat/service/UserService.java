@@ -23,6 +23,10 @@ public class UserService {
     @Autowired
     RelationRepository relationRepository;
 
+    public User getUser(long id){
+        return userRepository.findById(id).get();
+    }
+
     public User getUser(String userId){
         return userRepository.findByUserId(userId);
     }

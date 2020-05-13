@@ -15,6 +15,6 @@ public class ChatSender {
 
     public void send(String topic, ChattingMessage data) {
         log.info("sending data='{}' to topic='{}'", data, topic);
-        kafkaTemplate.send(topic, data);// send to react clients via websocket(STOMP)
+        kafkaTemplate.send(topic, data);
     }
 }

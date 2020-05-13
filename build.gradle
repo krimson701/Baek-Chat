@@ -26,6 +26,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.kafka:spring-kafka'
 
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '2.2.6.RELEASE'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
 
@@ -44,6 +47,8 @@ dependencies {
 
     //log4jdbc
     compile ('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
+
+
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
