@@ -34,7 +34,7 @@ public class ChattingMessage implements Serializable {
      */
     private String message;
 
-    private Long timeStamp;
+    private Long timestamp;
 
     private String fileName;
     private String rawData;

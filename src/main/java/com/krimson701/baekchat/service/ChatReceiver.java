@@ -27,9 +27,9 @@ public class ChatReceiver {
         mongoTemplate.insert(message);
 
         HashMap<String, Object> msg = new HashMap<>();
-        msg.put("timestamp", Long.toString(message.getTimeStamp()));
-        msg.put("message", message.getMessage());
-        msg.put("author", message.getUserNo());     // 여기서 UserNo로 UserName 얻어냈어야함
+        msg.put("timestamp", Long.toString(message.getTimestamp()));
+        msg.put("message", message.getMessage());    // 여기서 UserNo로 UserName 얻어냈어야함
+        msg.put("author", message.getUserNo());
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(msg);
 

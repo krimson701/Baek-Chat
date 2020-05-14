@@ -6,6 +6,9 @@ import com.krimson701.baekchat.model.ChattingMessage;
 import com.krimson701.baekchat.service.ChatReceiver;
 import com.krimson701.baekchat.service.ChatSender;
 import com.krimson701.baekchat.service.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -38,11 +41,18 @@ public class ChattingController {
     @MessageMapping("/message")//@MessageMapping works for WebSocket protocol communication. This defines the URL mapping.
     //@SendTo("/topic/public")//websocket subscribe topic& direct send
     public void sendMessage(ChattingMessage message) throws Exception {
-        message.setTimeStamp(System.currentTimeMillis());
+        message.setTimestamp(System.currentTimeMillis());
+
         sender.send(BOOT_TOPIC, message);
 
     }
-
+    @ApiOperation(
+            value = "메세지 hist 조회"
+            , notes = "메세지 hist 조회"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="complete")
+    })
     @RequestMapping("/history/{channelNo}")
     public List<ChattingMessage> getChattingHistory(@PathVariable Long channelNo) throws Exception {
         System.out.println("history!");
