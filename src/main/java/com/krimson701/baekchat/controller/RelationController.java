@@ -71,4 +71,20 @@ public class RelationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(
+            value = "유저 관계 갱신"
+            , notes = "유저 관계 갱신"
+    )
+    @ApiResponses(value={
+            @ApiResponse(code = 200, message = "complete")
+    })
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity<Void> updateRelation(
+            @ApiParam(value = "관계 ID 키", required = true) @RequestParam final long Id,
+            @ApiParam(value = "관계 타입", required = true) @RequestParam final RelationType relation) throws Exception {
+        relationService.updateRelation(Id, relation);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
