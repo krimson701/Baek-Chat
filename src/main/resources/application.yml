@@ -1,8 +1,12 @@
 spring:
   profiles:
-    active: local
+    active: dev
+
+  resources:
+    add-mappings: true
 
 
-server:
-  port: 8080
-
+  data:
+    mongodb:
+      uri: mongodb+srv://baekchat:baekchat1@cluster0-icnyk.mongodb.net/test?retryWrites=true
+      database: baekchat
