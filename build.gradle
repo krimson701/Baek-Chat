@@ -48,11 +48,17 @@ dependencies {
     //log4jdbc
     compile ('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
 
+    // spring-data-redis
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
+    //embedded-redis
+    compile group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    implementation 'junit:junit:4.12'
+
 }
 
 test {
