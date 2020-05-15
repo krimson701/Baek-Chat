@@ -43,11 +43,9 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public Docket devApi() {
         String info = "-----------------------------\n"
-                + "-- swagger api for [ dev ] --\n"
+                + "-- swagger api for [dev] --\n"
                 + "-----------------------------\n";
-        Set<String> protocols = new HashSet<String>();
-        protocols.add("https");
-        return getDefaultDocket(protocols, "baek-chat.openur.biz"); // openur.biz 할지 말지 아직안정함
+        return getDefaultDocket(null, null);
     }
 
     private Docket getDefaultDocket(Set<String> protocols, String host){
