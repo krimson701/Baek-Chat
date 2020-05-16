@@ -35,7 +35,7 @@ public class ChattingController {
     @Autowired
     private UserService userService;
 
-    private static String BOOT_TOPIC = "baekchat";
+    private static String BOOT_TOPIC = "baek-chatting";
 
     //// "url/app/message"로 들어오는 메시지를 "/topic/public"을 구독하고있는 사람들에게 송신
     @MessageMapping("/message")//@MessageMapping works for WebSocket protocol communication. This defines the URL mapping.

@@ -21,7 +21,7 @@ public class ChatReceiver {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @KafkaListener(id = "main-listener", topics = "baekchat")
+    @KafkaListener(id = "main-listener", topics = "baek-chatting")
     public void receive(ChattingMessage message) throws Exception {
         log.info("message='{}'", message);
         mongoTemplate.insert(message);
