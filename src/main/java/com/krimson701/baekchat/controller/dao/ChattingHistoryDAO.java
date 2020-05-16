@@ -19,7 +19,7 @@ public class ChattingHistoryDAO {
 
     public List<ChattingMessage> get(Long channelNo){
         Query query = Query.query(Criteria.where("channelNo").is(Long.valueOf(channelNo)))
-        .with(Sort.by(Direction.DESC, "timeStamp")).limit(100);
+        .with(Sort.by(Direction.DESC, "timestamp")).limit(40);
         return mongoTemplate.find(query, ChattingMessage.class);
     }
 
