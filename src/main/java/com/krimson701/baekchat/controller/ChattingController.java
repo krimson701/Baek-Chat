@@ -1,10 +1,8 @@
 package com.krimson701.baekchat.controller;
 
-import com.krimson701.baekchat.controller.dao.ChattingHistoryDAO;
 import com.krimson701.baekchat.domain.User;
 import com.krimson701.baekchat.model.ChattingMessage;
-import com.krimson701.baekchat.service.ChatReceiver;
-import com.krimson701.baekchat.service.ChatSender;
+import com.krimson701.baekchat.service.MessengerService;
 import com.krimson701.baekchat.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,13 +22,7 @@ import java.util.List;
 public class ChattingController {
 
     @Autowired
-    private ChatSender sender;
-
-    @Autowired
-    private ChatReceiver receiver;
-
-    @Autowired
-    private ChattingHistoryDAO chattingHistoryDAO;
+    private MessengerService messengerService;
 
     @Autowired
     private UserService userService;
@@ -43,9 +35,11 @@ public class ChattingController {
     public void sendMessage(ChattingMessage message) throws Exception {
         message.setTimestamp(System.currentTimeMillis());
 
-        sender.send(BOOT_TOPIC, message);
+        messengerService.messagePub(BOOT_TOPIC, message);
 
     }
+
+
     @ApiOperation(
             value = "메세지 hist 조회"
             , notes = "메세지 hist 조회"
@@ -56,14 +50,14 @@ public class ChattingController {
     @RequestMapping("/history/{channelNo}")
     public List<ChattingMessage> getChattingHistory(@PathVariable Long channelNo) throws Exception {
         System.out.println("history!");
-        return chattingHistoryDAO.get(channelNo);
+        return messengerService.getMessageList(channelNo);
     }
 
     @MessageMapping("/chat/join")
     public void join(ChattingMessage message) {
         User user = userService.getUser(message.getUserNo());
         message.setMessage( user.getUserId() + "님이 입장하셨습니다.");
-        sender.send(BOOT_TOPIC, message);
+        messengerService.messagePub(BOOT_TOPIC, message);
     }
 
     @MessageMapping("/file")
