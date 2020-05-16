@@ -15,7 +15,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Profile({"local", "dev"})
@@ -41,12 +40,14 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
 
     @Profile("dev")
     @Bean
-    public Docket devApi() {
+    public Docket devApi() {    // 후에 바꿔야함
         String info = "-----------------------------\n"
                 + "-- swagger api for [dev] --\n"
                 + "-----------------------------\n";
         return getDefaultDocket(null, null);
     }
+
+
 
     private Docket getDefaultDocket(Set<String> protocols, String host){
         ApiInfo apiInfo = new ApiInfoBuilder().title("baek-chat-api").description("baek-chat API 명세").build();
