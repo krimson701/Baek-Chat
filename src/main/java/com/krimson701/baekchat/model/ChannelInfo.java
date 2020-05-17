@@ -34,7 +34,7 @@ public class ChannelInfo {
     /**
      * 저장한 유저 번호
      */
-    @ApiModelProperty(value = "저장한 유저 번호")
+    @ApiModelProperty(value = "생성한 유저 번호")
     private long regUserNo;
 
     /**
