@@ -13,7 +13,9 @@ spring:
         use_second_level_cache: true
         use_query_cache: false
     show-sql: true
-
+  redis:
+    host: 121.130.105.58
+    port: 6379
 kafka:
   server: 110.34.74.134:9092
 

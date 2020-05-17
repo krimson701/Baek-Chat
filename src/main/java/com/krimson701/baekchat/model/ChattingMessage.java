@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Data
 @Document(collection = "messenger_message")
-public class ChattingMessage implements Serializable {
+public class    ChattingMessage implements Serializable {
 
     /**
      * 메시지 번호
