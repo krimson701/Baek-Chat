@@ -3,12 +3,16 @@ package com.krimson701.baekchat.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krimson701.baekchat.configuration.AsyncConfig;
 import com.krimson701.baekchat.enums.ChannelStatusEnum;
+import com.krimson701.baekchat.enums.SequenceEnum;
 import com.krimson701.baekchat.model.ChannelInfo;
 import com.krimson701.baekchat.model.ChannelUser;
 import com.krimson701.baekchat.model.ChattingMessage;
+import com.krimson701.baekchat.model.MongoSequence;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -114,7 +118,7 @@ public class MessengerService {
      * @param userList
      * @return
      */
-    public ChannelInfo executeCreateChannel(Long userNo, String channelName, List<Long> userList) {
+    public ChannelInfo executeCreateChannel(Long userNo, String channelName, List<Long> userList) throws Exception {
         Collections.sort(userList);
 
         /**
@@ -150,6 +154,15 @@ public class MessengerService {
             log.info("createChannel isChannelsExist[true] channelNo[{}]", channelNo);
             channelInfo = getChannelInfo(channelNo, userNo);
             return channelInfo;
+        }
+
+        /**
+         * 생성 후 조회해서 내린다.
+         */
+        channelNo = this.nextMessageSeq(SequenceEnum.channel);
+        String userNos = StringUtils.join(userList, ",");
+        if (StringUtils.isBlank(channelName)) {
+            channelName = userNos;  // 비어있으면 일단 유저 번호로 채움(카톡처럼)
         }
 
         /**
@@ -239,6 +252,17 @@ public class MessengerService {
 
         // udpate 혹은 delete 작업 오류시 MongoUnacknowledgedWriteException 이 발생할 것
         // Transaction 처리되어야 정상
+    }
+
+    protected long nextMessageSeq(SequenceEnum key) throws Exception {
+        MongoSequence sequence = mongoTemplate.findAndModify(Query.query(Criteria.where("_id").is(key.getValue())),
+                new Update().inc("seq", 1), FindAndModifyOptions.options().returnNew(true), MongoSequence.class);
+
+        if (sequence == null) {
+            log.error("Failed to get sequence");
+            throw new Exception();
+        }
+        return sequence.getSeq();
     }
 
 }

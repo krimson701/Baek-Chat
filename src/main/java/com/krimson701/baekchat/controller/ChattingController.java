@@ -90,11 +90,9 @@ public class ChattingController {
     @RequestMapping(value = "/channel/create", method = RequestMethod.POST)
     public ResponseEntity<ChannelInfo> channelCreate(@RequestParam("userNo") Long userNo,
                                                      @ApiParam(value = "멤버 번호 배열(1,2,3,4,5), 본인 포함", required = true) @RequestParam(name = "users", required = true) String users,
-                                                     @ApiParam(value = "채팅 방 이름", required = false) @RequestParam(name = "name", required = false) String channelName)
-            throws Exception {
+                                                     @ApiParam(value = "채팅 방 이름", required = false) @RequestParam(name = "name", required = false) String channelName) throws Exception {
 
         if (StringUtils.isBlank(users)) {
-            // null
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         users = users.replaceAll("\\s+", "");
