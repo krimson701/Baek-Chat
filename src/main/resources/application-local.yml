@@ -22,4 +22,4 @@ kafka:
   server: 110.34.74.134:9092
 
 server:
-  port: 8080
+  port: 9090

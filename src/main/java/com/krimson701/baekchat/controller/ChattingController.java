@@ -53,7 +53,7 @@ public class ChattingController {
         return messengerService.getMessageList(channelNo);
     }
 
-    @MessageMapping("/chat/join")
+    @MessageMapping("/templates/chat/join")
     public void join(ChattingMessage message) {
         User user = userService.getUser(message.getUserNo());
         message.setMessage( user.getUserId() + "님이 입장하셨습니다.");
