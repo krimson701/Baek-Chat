@@ -30,10 +30,13 @@ dependencies {
     // spring-data-redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
 
 
+    compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.2.7.RELEASE'
     compile "org.springframework.boot:spring-boot-configuration-processor"
     compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '2.2.6.RELEASE'
 
