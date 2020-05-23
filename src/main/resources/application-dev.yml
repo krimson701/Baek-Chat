@@ -15,10 +15,10 @@ spring:
         use_query_cache: false
     show-sql: true
   redis:
-    host: 121.130.105.58
-    port: 6379
-kafka:
-  server: 110.34.74.134:9092
+    host: krimson702.cafe24.com
+    port: 21399
+#kafka:
+#  server: 110.34.74.134:9092
 
 server:
   port: 9090
