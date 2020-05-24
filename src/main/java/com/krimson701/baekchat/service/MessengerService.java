@@ -1,7 +1,6 @@
 package com.krimson701.baekchat.service;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krimson701.baekchat.configuration.AsyncConfig;
 import com.krimson701.baekchat.enums.ChannelStatusEnum;
 import com.krimson701.baekchat.enums.SequenceEnum;
@@ -22,10 +21,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

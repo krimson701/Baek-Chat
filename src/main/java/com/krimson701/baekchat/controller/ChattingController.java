@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.redis.listener.ChannelTopic;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -23,7 +21,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.channels.Channel;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

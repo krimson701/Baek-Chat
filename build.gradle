@@ -30,9 +30,7 @@ dependencies {
     // spring-data-redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
-    //embedded-redis
-    implementation 'junit:junit:4.12'
-    compile group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+
 
 
 
@@ -42,12 +40,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
 
-    implementation 'org.webjars.bower:bootstrap:4.3.1'
-    implementation 'org.webjars.bower:vue:2.5.16'
-    implementation 'org.webjars.bower:axios:0.17.1'
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
-    implementation 'com.google.code.gson:gson:2.8.0'
 
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.7'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
