@@ -13,8 +13,6 @@ spring:
         use_second_level_cache: true
         use_query_cache: false
     show-sql: true
-  profiles:
-    active: local
   redis:
     host: localhost
     port: 6379
