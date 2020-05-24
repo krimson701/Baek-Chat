@@ -1,6 +1,5 @@
 package com.krimson701.baekchat.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.krimson701.baekchat.controller.enums.RelationType;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,6 +25,7 @@ public class Relation {
     @JoinColumn(name ="related_id", nullable = false)
     private User relatedUser;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name ="type")
     private RelationType type; //
 
