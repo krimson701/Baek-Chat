@@ -21,7 +21,6 @@ public class RedisSubscriber implements MessageListener {
 
     public RedisSubscriber(ObjectMapper objectMapper, RedisTemplate redisTemplate, SimpMessagingTemplate template, MongoTemplate mongoTemplate) {
         this.objectMapper = objectMapper;
-
         this.redisTemplate = redisTemplate;
         this.template = template;
         this.mongoTemplate = mongoTemplate;
@@ -37,8 +36,10 @@ public class RedisSubscriber implements MessageListener {
 
         String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
         ChattingMessage roomMessage = objectMapper.readValue(publishMessage, ChattingMessage.class);
-        mongoTemplate.insert(roomMessage);
         // redis에서 발행된 데이터를 받아 deserialize
+
+        mongoTemplate.insert(roomMessage);
+        //Mongo DB에 저장
 
 
         // Websocket 구독자에게 채팅 메시지 Send

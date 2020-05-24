@@ -25,9 +25,10 @@ public class MessengerService{
     @Autowired
     private RedisTemplate redisTemplate;
 
-
+    //REDIS PUB
     public void messagePub(String topic, ChattingMessage data) {
         redisTemplate.convertAndSend(topic, data);
+        //topic = "baek-chatting"
     }
 
     public List<ChattingMessage> getMessageList(Long channelNo){

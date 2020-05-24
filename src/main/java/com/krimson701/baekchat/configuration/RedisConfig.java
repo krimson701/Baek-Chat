@@ -27,6 +27,9 @@ public class RedisConfig {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    /**
+     * Listener에 RedisSubscriber 등록
+     */
     @Bean
     MessageListenerAdapter messageListener() {
         return new MessageListenerAdapter(new RedisSubscriber(objectMapper, redisTemplate, template, mongoTemplate));
