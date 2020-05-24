@@ -27,13 +27,9 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public User getUser(String userId){
-        return userRepository.findByUserId(userId);
-    }
-
     public Page<User> getUserList(UserSearchModel userSearchModel, Pageable pageable) {
 
-        Specification<User> spec = Specification.where(UserSpecs.searchLike("userId", userSearchModel.getId()));
+        Specification<User> spec = Specification.where(UserSpecs.searchLike("email", userSearchModel.getEmail()));
         spec = spec.and(UserSpecs.searchLike("hobby", userSearchModel.getHobby()));
         Page<User> userList = userRepository.findAll(spec, pageable);
         //dto로 바꿀수있는지 생각해보자 응 바꿀수있다..
@@ -55,7 +51,7 @@ public class UserService {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         User user = userRepository.getOne((long)id);
-        userDto.setUserId(user.getUserId()); // 이부분은 user_id(키 말고 ID)를 수정할수없도록 하려고함
+        userDto.setId(user.getId()); // 이부분은 user_id(키 말고 ID)를 수정할수없도록 하려고함
 
         modelMapper.map(userDto,user);
 

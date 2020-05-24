@@ -66,7 +66,7 @@ public class ChattingController {
     @MessageMapping("/templates/chat/join")
     public void join(ChattingMessage message) {
         User user = userService.getUser(message.getUserNo());
-        message.setMessage(user.getUserId() + "님이 입장하셨습니다.");
+        message.setMessage(user.getEmail() + "님이 입장하셨습니다.");
         messengerService.messagePub(BOOT_TOPIC, message);
     }
 
