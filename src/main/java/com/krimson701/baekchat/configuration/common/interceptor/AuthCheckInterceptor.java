@@ -1,7 +1,6 @@
 package com.krimson701.baekchat.configuration.common.interceptor;
 
 import com.krimson701.baekchat.model.AuthGoogleInfo;
-import com.krimson701.baekchat.model.UserDto;
 import com.krimson701.baekchat.repository.UserRepository;
 import com.krimson701.baekchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +42,7 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
             String temp = it.nextElement();
             log.info("[{}] : [{}]", temp, request.getHeader(temp));
         }
-        log.info("token : [{}]",request.getHeader("authorization"));
+        log.info("token : [{}]", request.getHeader("authorization"));
         String googleUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.getHeader("authorization");
         ResponseEntity<AuthGoogleInfo> googleResponse = restTemplate.exchange(googleUrl, HttpMethod.GET, null, AuthGoogleInfo.class);
         AuthGoogleInfo authData = googleResponse.getBody();
@@ -51,12 +50,9 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
 
         Long userId = Long.valueOf(authData.getUserId().substring(2));// String to Long
         log.info("userId cut : [{}]", userId);
-        if(!userRepository.findById(userId).isPresent()) {
-            log.info("insert 실행");
-            UserDto newUser = new UserDto(userId, authData.getEmail());
-            userService.insertUser(newUser);
-        }
+
         request.setAttribute("userId", userId);
+        request.setAttribute("userEmail", authData.getEmail());
         log.info("결과 : Attr [{}]",request.getAttribute("userId"));
         log.info(">> AuthCheckInterceptor preHandle End<<");
         return true;

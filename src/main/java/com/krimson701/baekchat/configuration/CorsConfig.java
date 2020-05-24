@@ -17,7 +17,7 @@ public class CorsConfig extends WebMvcConfigurationSupport {
 //        cr.addMapping("/**")
 //                .allowedOrigins("*")  // 허용할 주소 및 포트
 //                .allowCredentials(true)
-//                .allowedHeaders("Authorization");
+//                .allowedHeaders("*");
 //                // allowed method 는 default로 GET, POST, DELETE 만 설정 PUT을 직접넣어줘야함
 //    }
 

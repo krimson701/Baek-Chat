@@ -4,18 +4,6 @@ spring:
 
   resources:
     add-mappings: true
-  security:
-    oauth2:
-      google:
-        client:
-          clientId: 93172012175-1us86pmqgilm2kg38knddg8g72d3jari.apps.googleusercontent.com
-          clientSecret: uRkFBspz1pip5AI9xpNiWSeG
-          accessTokenUri: https://accounts.google.com/o/oauth2/token
-          userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
-          clientAuthenticationScheme: form
-          scope: email, profile
-        resource:
-          userInfoUri: https://www.googleapis.com/oauth2/v2/userinfo
 
   data:
     mongodb:
