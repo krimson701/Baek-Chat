@@ -12,8 +12,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.CollectionUtils;
@@ -61,7 +63,7 @@ public class ChattingController {
         return messengerService.getMessageList(channelNo);
     }
 
-    @MessageMapping("/chat/join")
+    @MessageMapping("/templates/chat/join")
     public void join(ChattingMessage message) {
         User user = userService.getUser(message.getUserNo());
         message.setMessage(user.getUserId() + "님이 입장하셨습니다.");

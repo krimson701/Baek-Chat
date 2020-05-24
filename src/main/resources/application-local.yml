@@ -13,9 +13,11 @@ spring:
         use_second_level_cache: true
         use_query_cache: false
     show-sql: true
-
-kafka:
-  server: 110.34.74.134:9092
+  redis:
+    host: localhost
+    port: 6379
+#kafka:
+#  server: 110.34.74.134:9092
 
 server:
-  port: 8080
+  port: 9090

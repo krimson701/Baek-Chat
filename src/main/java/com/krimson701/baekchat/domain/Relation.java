@@ -27,7 +27,7 @@ public class Relation {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name ="type")
-    private RelationType type; // 나중에 Enum으로 정의하자
+    private RelationType type; //
 
     @Column(name ="create_date")
     @CreationTimestamp
