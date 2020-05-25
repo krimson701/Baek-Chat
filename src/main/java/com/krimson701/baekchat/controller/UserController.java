@@ -31,9 +31,9 @@ public class UserController {
     })
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(
-            @ApiParam(value = "유저 ID", required = true) @RequestParam final String userId){
+            @ApiParam(value = "유저 ID", required = true) @RequestParam final long id){
 
-        User result = userService.getUser(userId);
+        User result = userService.getUser(id);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

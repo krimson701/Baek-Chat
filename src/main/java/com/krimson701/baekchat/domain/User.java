@@ -15,12 +15,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable=false)
     private long id;
-
-    @Column(name="user_id", unique=true)		// varchar(255)
-    private String userId;
 
     @Column(name="email", length=40, nullable=false) // varchar(100) not null
     private String email;

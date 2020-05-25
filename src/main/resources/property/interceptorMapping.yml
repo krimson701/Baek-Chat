@@ -1,0 +1,7 @@
+interceptor:
+
+  authCheck:
+    interceptorName: authCheckInterceptor
+    mappings:
+        - /**/*
+    exclude-mappings:

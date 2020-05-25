@@ -11,7 +11,7 @@ import lombok.Data;
 public class UserSearchModel {
 
     @ApiModelProperty(value = "아이디(like)", required = false)
-    private String id;
+    private String email;
 
     @ApiModelProperty(value = "취미(like)", required = false)
     private String hobby;
