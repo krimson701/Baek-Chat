@@ -3,5 +3,8 @@ interceptor:
   authCheck:
     interceptorName: authCheckInterceptor
     mappings:
-        - /**/*
+      - /**/*
     exclude-mappings:
+      - /swagger-resources
+      - /swagger-resources/configuration/*
+      - /swagger-ui.html
