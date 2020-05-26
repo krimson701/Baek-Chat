@@ -35,6 +35,7 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controller) {
+        //log.info(request.getRequestURI());
         log.info(">> AuthCheckInterceptor preHandle Start<<");
 
         Enumeration<String> it = request.getHeaderNames();

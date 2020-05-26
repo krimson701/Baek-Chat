@@ -8,3 +8,4 @@ interceptor:
       - /swagger-resources
       - /swagger-resources/configuration/*
       - /swagger-ui.html
+      - /webjars/springfox-swagger-ui/*
