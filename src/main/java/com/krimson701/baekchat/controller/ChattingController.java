@@ -12,14 +12,13 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class ChattingController {
     //@SendTo("/topic/public")//websocket subscribe topic& direct send
     public void sendMessage(ChattingMessage message) throws Exception {
         message.setTimestamp(System.currentTimeMillis());
-
+        log.info("message : [{}]", message);
         messengerService.messagePub(BOOT_TOPIC, message);
 
     }
@@ -86,11 +85,11 @@ public class ChattingController {
      * @return
      * @throws Exception
      */
-    @ApiOperation(value = "채팅 방 생성", notes = "이미 생성시 기존 채팅방 번호 리턴 (UserNo @ApiIgnore @RequestAttribute 해주어야함)")
+    @ApiOperation(value = "채팅 방 생성", notes = "이미 생성시 기존 채팅방 번호 리턴 ")
     @ApiResponses(value = {@ApiResponse(code = 200, message = ""), @ApiResponse(code = 400, message = "파라미터 오류"),
             @ApiResponse(code = 403, message = "요청 멤버 파트너 권한 없음") }) // 403 response는 추후 삭제 예정
     @RequestMapping(value = "/channel/create", method = RequestMethod.POST)
-    public ResponseEntity<ChannelInfo> channelCreate(@RequestParam("userNo") Long userNo,
+    public ResponseEntity<ChannelInfo> channelCreate(@ApiIgnore @RequestAttribute("userId") Long userNo,
                                                      @ApiParam(value = "멤버 번호 배열(1,2,3,4,5), 본인 포함", required = true) @RequestParam(name = "users", required = true) String users,
                                                      @ApiParam(value = "채팅 방 이름", required = false) @RequestParam(name = "name", required = false) String channelName) throws Exception {
 
@@ -134,7 +133,8 @@ public class ChattingController {
             @ApiResponse(code = 200, message = "complete")
     })
     @RequestMapping(value = "/channel/list", method = RequestMethod.GET)
-    public ResponseEntity<List<ChannelInfo>> getChannelList(@RequestParam("userNo") Long userNo) throws Exception {
+    public ResponseEntity<List<ChannelInfo>> getChannelList(
+            @ApiIgnore @RequestAttribute("userId") Long userNo) throws Exception {
 
         List<ChannelInfo> resultList = messengerService.getChannelList(userNo);
 
@@ -151,10 +151,41 @@ public class ChattingController {
     })
     @RequestMapping(value = "/channel/{channelNo}/exit", method = RequestMethod.POST)
     public ResponseEntity<Void> exitChannel(
-            @RequestParam("userNo") Long userNo,
+            @ApiIgnore @RequestAttribute("userId") Long userNo,
             @PathVariable Long channelNo) throws Exception {
 
         messengerService.executeExitChannel(channelNo, userNo);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiOperation(
+            value = "유저 채널 초대"
+            , notes = "유저 채널 초대"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "complete")
+    })
+    @RequestMapping(value = "/channel/invite", method = RequestMethod.POST)
+    public ResponseEntity<Void> inviteChannel(
+            @ApiIgnore @RequestAttribute("userId") Long userNo,
+            @ApiParam(value = "채팅 방 번호", required = true) @RequestParam Long channelNo,
+            @ApiParam(value = "초대자 리스트", required = true) @RequestParam List<Long> invitedNos) {
+
+
+        /**
+         * 초대자 유효성 체크
+         * 이미 채널에 있는 유저이면 제외 (클라이언트 단에서 선택하지 못하도록 할예정임)
+         */
+        ChannelInfo channelInfo = messengerService.getChannelInfo(channelNo, userNo);
+        log.info("[{}]",channelInfo.getUserNos());
+        List<Long> temp = invitedNos;
+        for(Long tempNo: temp){
+            if (channelInfo.getUserNos().contains(tempNo)) {
+                invitedNos.remove(tempNo);
+            }
+        }
+        messengerService.executeInviteUser(channelNo, invitedNos);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

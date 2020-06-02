@@ -226,6 +226,36 @@ public class MessengerService{
         // Transaction 처리되어야 정상
     }
 
+    /**
+     * 유저 채널 초대
+     * @return
+     * @throws Exception
+     */
+    public void executeInviteUser(Long channelNo, List<Long> userNos){
+
+        /**
+         * 채널 userNo 리스트에 추가
+         */
+        Update update = new Update();
+        update.push("userNos").each(userNos);
+
+        mongoTemplate.updateFirst(Query.query(Criteria.where("channelNo").is(Long.valueOf(channelNo)).and("status")
+                .is(ChannelStatusEnum.enabled.getValue())), update, ChannelInfo.class);
+        /**
+         * 유저 - 채널 관계 추가
+         */
+        List<ChannelUser> channelUsers = new ArrayList<>();
+        for (long row : userNos) {
+            ChannelUser channelUser = new ChannelUser();
+            channelUser.setChannelNo(channelNo);
+            channelUser.setUserNo(row);
+            channelUser.setRegtime(Calendar.getInstance().getTimeInMillis());
+            channelUser.setAlarm(true);
+            channelUsers.add(channelUser);
+        }
+        mongoTemplate.insertAll(channelUsers);
+    }
+
     protected long nextMessageSeq(SequenceEnum key) throws Exception {
         MongoSequence sequence = mongoTemplate.findAndModify(Query.query(Criteria.where("_id").is(key.getValue())),
                 new Update().inc("seq", 1), FindAndModifyOptions.options().returnNew(true), MongoSequence.class);

@@ -29,6 +29,11 @@ public class ChattingMessage implements Serializable {
     private Long channelNo;
 
     /**
+     * 유저 이메일
+     */
+    private String userEmail;
+
+    /**
      * 메시지
      */
     private String message;
