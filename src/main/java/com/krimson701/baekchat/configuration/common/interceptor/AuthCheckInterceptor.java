@@ -54,7 +54,7 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         AuthGoogleInfo authData = googleResponse.getBody();
-        Long userId = Long.valueOf(authData.getUserId().substring(2));// String to Long
+        Long userId = Long.valueOf(authData.getUserId().substring(5));// String to Long
         log.info("userId cut : [{}]", userId);
 
         request.setAttribute("userId", userId);

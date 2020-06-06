@@ -46,11 +46,11 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public void updateUser(int id, UserDto userDto){
+    public void updateUser(long id, UserDto userDto){
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        User user = userRepository.getOne((long)id);
+        User user = userRepository.getOne(id);
         userDto.setId(user.getId()); // 이부분은 user_id(키 말고 ID)를 수정할수없도록 하려고함
 
         modelMapper.map(userDto,user);
@@ -58,7 +58,7 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public void deleteUser(int id){
-        userRepository.deleteById((long)id);
+    public void deleteUser(long id){
+        userRepository.deleteById(id);
     }
 }

@@ -57,7 +57,9 @@ public class ChattingController {
             @ApiResponse(code = 200, message = "complete")
     })
     @RequestMapping(value = "/history/{channelNo}", method = RequestMethod.GET)
-    public List<ChattingMessage> getChattingHistory(@PathVariable Long channelNo) throws Exception {
+    public List<ChattingMessage> getChattingHistory(
+            @ApiIgnore @RequestAttribute("userId") Long userId
+            , @PathVariable Long channelNo) throws Exception {
         System.out.println("history!");
         return messengerService.getMessageList(channelNo);
     }

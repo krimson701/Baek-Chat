@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
+/**
+ * userId 로 유효성 체크해줘야함
+ */
 @Slf4j
 @Api(value="Relation-controller", description="Relation controller")
 @RequestMapping("/relation")
@@ -29,9 +33,9 @@ public class RelationController {
     @ApiResponses(value={
             @ApiResponse(code=200, message="complete")
     })
-    @RequestMapping(value = "/get/{userId}/{relation}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{relation}", method = RequestMethod.GET)
     public ResponseEntity<List<Relation>> getRelations(
-            @ApiParam(value = "유저 ID 키", required = true) @PathVariable final long userId,
+            @ApiIgnore @RequestAttribute("userId") Long userId,
             @ApiParam(value = "관계 타입") @PathVariable(required = false) final RelationType relation){
         List<Relation> rtnDto = relationService.getRelations(userId, relation);
 
@@ -48,7 +52,7 @@ public class RelationController {
     })
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public ResponseEntity<Void> insertRelation(
-            @ApiParam(value = "유저 ID 키", required = true) @RequestParam final long userId,
+            @ApiIgnore @RequestAttribute("userId") Long userId,
             @ApiParam(value = "상대 ID 키", required = true) @RequestParam final long relatedId,
             @ApiParam(value = "관계 타입", required = true) @RequestParam final RelationType relation) throws Exception {
         relationService.insertRelation(userId, relatedId, relation);
@@ -65,7 +69,8 @@ public class RelationController {
     })
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteRelation(
-            @ApiParam(value = "관계 ID 키", required = true) @RequestParam final long Id) throws Exception {
+            @ApiIgnore @RequestAttribute("userId") Long userId
+            , @ApiParam(value = "관계 ID 키", required = true) @RequestParam final long Id) throws Exception {
         relationService.deleteRelation(Id);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -80,6 +85,7 @@ public class RelationController {
     })
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Void> updateRelation(
+            @ApiIgnore @RequestAttribute("userId") Long userId,
             @ApiParam(value = "관계 ID 키", required = true) @RequestParam final long Id,
             @ApiParam(value = "관계 타입", required = true) @RequestParam final RelationType relation) throws Exception {
         relationService.updateRelation(Id, relation);

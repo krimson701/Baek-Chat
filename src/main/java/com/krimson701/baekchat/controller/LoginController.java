@@ -52,13 +52,18 @@ public class LoginController {
             , @ApiIgnore @RequestAttribute("userEmail") String userEmail) {
         // 넘어오는 User 데이터가 많아지면 id와 email만 받는게아니라 userAuthModel형식으로 모델로 받을것
         // 그러려면 당연히 인터셉터에서 모델로 보내야한다.
+        User user = null;
         Optional<User> userInfo = userRepository.findById(userId);
-        if(!userInfo.isPresent()) {
+        if (!userInfo.isPresent()) {
             log.info("newUser insert Execute");
             UserDto newUser = new UserDto(userId, userEmail);
             userService.insertUser(newUser);
+            user = new User(userEmail, "");
+            user.setId(userId);
+        } else {
+            user = userInfo.get();
         }
         log.info("userId : [{}]  Email : [{}]", userId, userEmail);
-        return new ResponseEntity<>(userInfo.get(),HttpStatus.OK);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 }
