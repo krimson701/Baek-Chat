@@ -6,6 +6,7 @@ import com.krimson701.baekchat.model.UserSearchModel;
 import com.krimson701.baekchat.model.UserSpecs;
 import com.krimson701.baekchat.repository.RelationRepository;
 import com.krimson701.baekchat.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class UserService {
     public Page<User> getUserList(UserSearchModel userSearchModel, Pageable pageable) {
 
         Specification<User> spec = Specification.where(UserSpecs.searchLike("email", userSearchModel.getEmail()));
-        spec = spec.and(UserSpecs.searchLike("hobby", userSearchModel.getHobby()));
+        if(StringUtils.isNotEmpty(userSearchModel.getHobby()))
+            spec = spec.and(UserSpecs.searchLike("hobby", userSearchModel.getHobby()));
         Page<User> userList = userRepository.findAll(spec, pageable);
         //dto로 바꿀수있는지 생각해보자 응 바꿀수있다..
         return userList;
@@ -60,5 +62,9 @@ public class UserService {
 
     public void deleteUser(long id){
         userRepository.deleteById(id);
+    }
+
+    public User searchUser(String userEmail){
+        return userRepository.findByEmail(userEmail+"@gmail.com").get();
     }
 }
