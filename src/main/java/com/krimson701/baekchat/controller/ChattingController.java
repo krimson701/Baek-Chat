@@ -172,7 +172,13 @@ public class ChattingController {
     public ResponseEntity<Void> inviteChannel(
             @ApiIgnore @RequestAttribute("userId") Long userNo,
             @ApiParam(value = "채팅 방 번호", required = true) @RequestParam Long channelNo,
-            @ApiParam(value = "초대자 리스트", required = true) @RequestParam List<Long> invitedNos) {
+            @ApiParam(value = "초대자 번호 배열(1,2,3,4,5)", required = true) @RequestParam(name = "users", required = true) String users) {
+
+        if (StringUtils.isBlank(users)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        users = users.replaceAll("\\s+", "");
+        List<Long> invitedNos = Stream.of(users.split(",")).map(Long::parseLong).distinct().collect(Collectors.toList());
 
 
         /**
@@ -180,7 +186,6 @@ public class ChattingController {
          * 이미 채널에 있는 유저이면 제외 (클라이언트 단에서 선택하지 못하도록 할예정임)
          */
         ChannelInfo channelInfo = messengerService.getChannelInfo(channelNo, userNo);
-        log.info("[{}]",channelInfo.getUserNos());
         List<Long> temp = invitedNos;
         for(Long tempNo: temp){
             if (channelInfo.getUserNos().contains(tempNo)) {
