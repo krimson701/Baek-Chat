@@ -6,6 +6,7 @@ import com.krimson701.baekchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Enumeration;
 
 /**
@@ -35,7 +37,7 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
     UserRepository userRepository;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controller) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controller) throws IOException {
         //log.info(request.getRequestURI());
         log.info(">> AuthCheckInterceptor preHandle Start<<");
         log.info("URI : [{}]", request.getRequestURI());
@@ -50,7 +52,8 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
             String googleUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.getHeader("authorization");
             googleResponse = restTemplate.exchange(googleUrl, HttpMethod.GET, null, AuthGoogleInfo.class);
         } catch (HttpClientErrorException e){
-            log.debug("Invalid Google Token");
+            log.info("Invalid Google Token");
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid Google Token");
             return false;
         }
         AuthGoogleInfo authData = googleResponse.getBody();
