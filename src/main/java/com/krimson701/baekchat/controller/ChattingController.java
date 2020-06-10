@@ -58,12 +58,19 @@ public class ChattingController {
     })
     @RequestMapping(value = "/history/{channelNo}", method = RequestMethod.GET)
     public List<ChattingMessage> getChattingHistory(
-            @ApiIgnore @RequestAttribute("userId") Long userId
-            , @PathVariable Long channelNo) throws Exception {
+            @ApiIgnore @RequestAttribute("userId") Long userNo
+            , @PathVariable Long channelNo) {
+
+        messengerService.channelRoleCheck(userNo, channelNo);
+
         System.out.println("history!");
         return messengerService.getMessageList(channelNo);
     }
 
+    /**
+     * 채널 참여시 메세지 남기는건데 대체 어느부분에 넣어야할지 모르겟음
+     * @param message
+     */
     @MessageMapping("/templates/chat/join")
     public void join(ChattingMessage message) {
         User user = userService.getUser(message.getUserNo());
@@ -173,6 +180,7 @@ public class ChattingController {
             @ApiIgnore @RequestAttribute("userId") Long userNo,
             @ApiParam(value = "채팅 방 번호", required = true) @RequestParam Long channelNo,
             @ApiParam(value = "초대자 번호 배열(1,2,3,4,5)", required = true) @RequestParam(name = "users", required = true) String users) {
+
 
         if (StringUtils.isBlank(users)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

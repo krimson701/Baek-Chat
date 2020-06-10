@@ -6,7 +6,6 @@ import com.krimson701.baekchat.enums.ChannelStatusEnum;
 import com.krimson701.baekchat.enums.SequenceEnum;
 import com.krimson701.baekchat.model.ChannelInfo;
 import com.krimson701.baekchat.model.ChannelUser;
-
 import com.krimson701.baekchat.model.ChattingMessage;
 import com.krimson701.baekchat.model.MongoSequence;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +16,15 @@ import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
-import org.springframework.data.redis.core.RedisTemplate;
-
 import org.springframework.data.mongodb.core.query.Update;
-
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
-
-import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -56,6 +52,7 @@ public class MessengerService{
 
     public List<ChattingMessage> getMessageList(Long channelNo) {
         // 채널 메세지 리스트 조회 timestamp 최신순으로 40개
+
         Query query = Query.query(Criteria.where("channelNo").is(Long.valueOf(channelNo)))
                 .with(Sort.by(Sort.Direction.DESC, "timestamp")).limit(40);
         return mongoTemplate.find(query, ChattingMessage.class);
@@ -256,13 +253,36 @@ public class MessengerService{
         mongoTemplate.insertAll(channelUsers);
     }
 
-    protected long nextMessageSeq(SequenceEnum key) throws Exception {
+    /**
+     * 채널 권한 체크
+     *
+     * @param channelNo
+     * @param userNo
+     * @return
+     */
+    public ChannelInfo channelRoleCheck(long userNo, long channelNo) {
+        // 개별 채널
+        ChannelInfo channelsInfo = mongoTemplate.findOne(Query.query(Criteria.where("channelNo")
+                .is(Long.valueOf(channelNo)).and("userNos").is(Long.valueOf(userNo))), ChannelInfo.class);
+        /*
+         * 프로젝트 탈퇴시 채널 데이터가 없을거라 권한을 따로 분기해야 하나 싶음. 프로젝트 채널 정보 조회시, 메세지 보낼때 삭제 여부 및 권한
+         * 없음(완료) 분기해서 응답해야함. 404 : 삭제 401 : 권한없음.(탈퇴 당해서) 401 : 완료된 채널
+         */
+        if (channelsInfo == null) {
+            log.error("Channel Role Fail");
+            throw new RuntimeException();
+        }
+
+        return channelsInfo;
+    }
+
+    protected long nextMessageSeq(SequenceEnum key) {
         MongoSequence sequence = mongoTemplate.findAndModify(Query.query(Criteria.where("_id").is(key.getValue())),
                 new Update().inc("seq", 1), FindAndModifyOptions.options().returnNew(true), MongoSequence.class);
 
         if (sequence == null) {
             log.error("Failed to get sequence");
-            throw new Exception();
+            throw new RuntimeException();
         }
         return sequence.getSeq();
     }
