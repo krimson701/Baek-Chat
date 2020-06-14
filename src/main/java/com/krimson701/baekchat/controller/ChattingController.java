@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -188,19 +189,23 @@ public class ChattingController {
         users = users.replaceAll("\\s+", "");
         List<Long> invitedNos = Stream.of(users.split(",")).map(Long::parseLong).distinct().collect(Collectors.toList());
 
-
         /**
          * 초대자 유효성 체크
          * 이미 채널에 있는 유저이면 제외 (클라이언트 단에서 선택하지 못하도록 할예정임)
          */
         ChannelInfo channelInfo = messengerService.getChannelInfo(channelNo, userNo);
-        List<Long> temp = invitedNos;
-        for(Long tempNo: temp){
-            if (channelInfo.getUserNos().contains(tempNo)) {
-                invitedNos.remove(tempNo);
+
+        List<Long> temp = new ArrayList<Long>();
+        for(Long invitedNo: invitedNos){
+            if (!(channelInfo.getUserNos().contains(invitedNo))) {
+                temp.add(invitedNo);
             }
         }
-        messengerService.executeInviteUser(channelNo, invitedNos);
+        if(temp.isEmpty()) {
+            log.error("Already invited members");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        messengerService.executeInviteUser(channelNo, temp);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
