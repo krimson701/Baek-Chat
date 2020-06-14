@@ -1,10 +1,13 @@
 package com.krimson701.baekchat.configuration.common.interceptor;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krimson701.baekchat.model.AuthGoogleInfo;
 import com.krimson701.baekchat.repository.UserRepository;
 import com.krimson701.baekchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ import java.util.Enumeration;
  */
 @Slf4j
 @Component
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
@@ -35,6 +39,9 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controller) throws IOException {
@@ -47,16 +54,23 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
             log.info("[{}] : [{}]", temp, request.getHeader(temp));
         }
         log.info("token : [{}]", request.getHeader("authorization"));
+        String redis_key_token = request.getHeader("authorization");
         ResponseEntity<AuthGoogleInfo> googleResponse = null;
-        try {
-            String googleUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.getHeader("authorization");
-            googleResponse = restTemplate.exchange(googleUrl, HttpMethod.GET, null, AuthGoogleInfo.class);
-        } catch (HttpClientErrorException e){
-            log.info("Invalid Google Token");
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid Google Token");
-            return false;
+        if(redisTemplate.opsForValue().get(redis_key_token) == null) {
+            try {
+                log.info("First token check");
+                String googleUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.getHeader("authorization");
+                googleResponse = restTemplate.exchange(googleUrl, HttpMethod.GET, null, AuthGoogleInfo.class);
+            } catch (HttpClientErrorException e){
+                log.info("Invalid Google Token");
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid Google Token");
+                return false;
+            }
+            redisTemplate.opsForValue().set(redis_key_token, googleResponse.getBody());
         }
-        AuthGoogleInfo authData = googleResponse.getBody();
+        Object result = redisTemplate.opsForValue().get(redis_key_token);
+        ObjectMapper om = new ObjectMapper();
+        AuthGoogleInfo authData = om.convertValue(result, AuthGoogleInfo.class);
         Long userId = Long.valueOf(authData.getUserId().substring(5));// String to Long
         log.info("userId cut : [{}]", userId);
 
