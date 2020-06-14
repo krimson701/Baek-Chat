@@ -3,7 +3,6 @@ package com.krimson701.baekchat.configuration.common.interceptor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krimson701.baekchat.model.AuthGoogleInfo;
-import com.krimson701.baekchat.model.ChattingMessage;
 import com.krimson701.baekchat.repository.UserRepository;
 import com.krimson701.baekchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.LinkedHashMap;
 
 /**
  * 인증 체크
@@ -60,6 +58,7 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
         ResponseEntity<AuthGoogleInfo> googleResponse = null;
         if(redisTemplate.opsForValue().get(redis_key_token) == null) {
             try {
+                log.info("First token check");
                 String googleUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.getHeader("authorization");
                 googleResponse = restTemplate.exchange(googleUrl, HttpMethod.GET, null, AuthGoogleInfo.class);
             } catch (HttpClientErrorException e){
