@@ -10,6 +10,7 @@ public class PropConfig {
     @Configuration
     @Profile({"default", "local"})
     @PropertySource(value = {
+            "classpath:/property/baekchat.yml",
             "classpath:/property/corsProp.yml",
             "classpath:/property/interceptorMapping.yml"
     }, factory = NewYamlPropertySourceFactory.class)
@@ -19,6 +20,7 @@ public class PropConfig {
     @Configuration
     @Profile("dev")
     @PropertySource(value = {
+            "classpath:/property/baekchat-dev.yml",
             "classpath:/property/corsProp.yml",
             "classpath:/property/interceptorMapping.yml"
     }, factory = NewYamlPropertySourceFactory.class)
