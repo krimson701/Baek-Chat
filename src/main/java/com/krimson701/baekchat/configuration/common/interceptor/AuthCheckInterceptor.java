@@ -60,9 +60,11 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
         log.info("token : [{}]", request.getHeader("authorization"));
         String runningType = baekProp.getRunningType();
         ResponseEntity<AuthGoogleInfo> googleResponse = null;
-
+        log.info("runningType : [{}]", runningType);
         Object result = null;
         if(runningType.equals("local")){
+            log.info("this is local!!!");
+
             try {
                 String googleUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.getHeader("authorization");
                 googleResponse = restTemplate.exchange(googleUrl, HttpMethod.GET, null, AuthGoogleInfo.class);
