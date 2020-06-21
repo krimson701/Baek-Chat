@@ -209,4 +209,29 @@ public class ChattingController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @ApiOperation(
+            value = "채널 내 유저 리스트"
+            , notes = "채널 내 유저 리스트"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "complete")
+    })
+    @RequestMapping(value = "/channel/users/{channelNo}", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getChannelUserList(
+            @ApiIgnore @RequestAttribute("userId") Long userNo,
+            @ApiParam(value = "채팅 방 번호", required = true) @RequestParam Long channelNo) {
+        /**
+         * 초대자 유효성 체크
+         * 이미 채널에 있는 유저이면 제외 (클라이언트 단에서 선택하지 못하도록 할예정임)
+         */
+        messengerService.channelRoleCheck(userNo, channelNo);
+
+        /**
+         * 채널 내 유저리스트
+         */
+        List<User> resultList = messengerService.getChannelUserList(channelNo);
+
+        return new ResponseEntity<List<User>>(resultList,HttpStatus.OK);
+    }
 }

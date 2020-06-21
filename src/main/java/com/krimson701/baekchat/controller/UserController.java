@@ -117,7 +117,7 @@ public class UserController {
             @ModelAttribute final UserSearchModel userSearchModel,
             @PageableDefault(size=5, sort="id") final Pageable pageable){
 
-        Page<User> rtnDto = userService.getUserList(userSearchModel, pageable);
+        Page<User> rtnDto = userService.getUserPage(userSearchModel, pageable);
 
         return new ResponseEntity<>(rtnDto, HttpStatus.OK);
     }

@@ -2,12 +2,11 @@ package com.krimson701.baekchat.service;
 
 
 import com.krimson701.baekchat.configuration.AsyncConfig;
+import com.krimson701.baekchat.domain.User;
 import com.krimson701.baekchat.enums.ChannelStatusEnum;
 import com.krimson701.baekchat.enums.SequenceEnum;
-import com.krimson701.baekchat.model.ChannelInfo;
-import com.krimson701.baekchat.model.ChannelUser;
-import com.krimson701.baekchat.model.ChattingMessage;
-import com.krimson701.baekchat.model.MongoSequence;
+import com.krimson701.baekchat.model.*;
+import com.krimson701.baekchat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +38,8 @@ public class MessengerService{
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -251,6 +252,22 @@ public class MessengerService{
             channelUsers.add(channelUser);
         }
         mongoTemplate.insertAll(channelUsers);
+    }
+
+    /**
+     * 채널 내 유저 리스트
+     */
+    public List<User> getChannelUserList(Long channelNo){
+
+        Query query = Query.query(Criteria.where("channelNo").is(Long.valueOf(channelNo)));
+        query.fields().include("userNo"); // userNo만 필요해서 다른 정보 조회 하지 않음
+        List<ChannelUser> userList = mongoTemplate.find(query, ChannelUser.class);
+        log.info("channelUser : [{}]", userList);
+
+        List<Long> users = userList.stream().map(ChannelUser::getUserNo).collect(Collectors.toList());
+        log.info("users : [{}]", users);
+
+        return userRepository.findByIdIn(users);
     }
 
     /**

@@ -28,7 +28,7 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public Page<User> getUserList(UserSearchModel userSearchModel, Pageable pageable) {
+    public Page<User> getUserPage(UserSearchModel userSearchModel, Pageable pageable) {
 
         Specification<User> spec = Specification.where(UserSpecs.searchLike("email", userSearchModel.getEmail()));
         if(StringUtils.isNotEmpty(userSearchModel.getHobby()))
