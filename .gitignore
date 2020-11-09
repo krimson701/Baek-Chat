@@ -1,3 +1,18 @@
-
+# intellij
 .idea/
-.gradle/
+.idea_modules/
+*.iml
+
+# eclipse
+.settings/
+.classpath
+.project
+
+# build
+gradle/
+.gradle
+build/
+target/
+out/
+gradlew*
+bin/
