@@ -1,0 +1,4 @@
+baekchat:
+  running-type: local
+#  uos-api-host: 우찬이가 생성한 서버
+#  elk-host: 현호가 만든 서버

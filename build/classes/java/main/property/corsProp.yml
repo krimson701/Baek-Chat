@@ -1,0 +1,10 @@
+Cors:
+  mappings: /**/*
+  allowMethods: GET, POST, PUT, DELETE, OPTIONS, HEAD
+  allowHeaders: Access-Control-Request-Method, Accept-Encoding, Connection, Accept-Language, Referer, User-Agent, Access-Control-Request-Headers, Cookie, X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept, collabee-auth-001, X-USER-LOCALE
+  allowOrigins:
+    - http://localhost:3000
+    - http://localhost:9092
+    - http://localhost:9464
+    - http://swagger.openur.biz
+    - https://swagger.openur.biz

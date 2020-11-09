@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: local
+
+  resources:
+    add-mappings: true
+
+  data:
+    mongodb:
+      uri: mongodb+srv://baekchat:baekchat1@cluster0-icnyk.mongodb.net/test?retryWrites=true
+      database: baekchat
